@@ -2,111 +2,206 @@
 
 @section('content')
 
-{{-- Hero --}}
-<div style="text-align:center;padding:72px 24px;background:linear-gradient(135deg,#27ae60 0%,#1a7a42 100%);border-radius:18px;color:white;margin-bottom:48px;">
-    <p style="font-size:0.9rem;letter-spacing:0.12em;text-transform:uppercase;opacity:0.8;margin-bottom:12px;">MediSched General Hospital</p>
-    <h1 style="font-size:2.6rem;font-weight:800;line-height:1.2;max-width:620px;margin:0 auto;">Your Health, Scheduled with Care</h1>
-    <p style="margin-top:16px;opacity:0.88;font-size:1.05rem;max-width:500px;margin-left:auto;margin-right:auto;">
-        Book consultations with our specialist doctors online — fast, easy, and from anywhere.
-    </p>
-    <div style="margin-top:32px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
-        @auth
-            @if(Auth::user()->role === 'doctor')
-                {{-- Doctors see their queue instead --}}
-                <a href="{{ route('doctor.queue') }}" style="background:white;color:#1a7a42;padding:12px 32px;border-radius:8px;font-weight:700;font-size:1rem;text-decoration:none;">
-                    View Patient Queue
-                </a>
-                <a href="{{ route('doctors.index') }}" style="background:rgba(255,255,255,0.18);color:white;border:2px solid rgba(255,255,255,0.6);padding:12px 32px;border-radius:8px;font-weight:700;font-size:1rem;text-decoration:none;">
-                    Doctors List
-                </a>
-            @else
-                {{-- Patients --}}
-                <a href="{{ route('appointments.book') }}" style="background:white;color:#1a7a42;padding:12px 32px;border-radius:8px;font-weight:700;font-size:1rem;text-decoration:none;">
-                    Book an Appointment
-                </a>
-                <a href="{{ route('doctors.index') }}" style="background:rgba(255,255,255,0.18);color:white;border:2px solid rgba(255,255,255,0.6);padding:12px 32px;border-radius:8px;font-weight:700;font-size:1rem;text-decoration:none;">
-                    View Doctors
-                </a>
-            @endif
-        @else
-            {{-- Guests --}}
-            <a href="{{ route('appointments.book') }}" style="background:white;color:#1a7a42;padding:12px 32px;border-radius:8px;font-weight:700;font-size:1rem;text-decoration:none;">
-                Book an Appointment
-            </a>
-            <a href="{{ route('doctors.index') }}" style="background:rgba(255,255,255,0.18);color:white;border:2px solid rgba(255,255,255,0.6);padding:12px 32px;border-radius:8px;font-weight:700;font-size:1rem;text-decoration:none;">
-                View Doctors
-            </a>
-        @endauth
-    </div>
-</div>
+<div style="max-width:1200px;margin:0 auto;display:flex;flex-direction:column;gap:36px;">
 
-{{-- How it works --}}
-<div style="margin-bottom:52px;">
-    <h2 style="font-size:1.5rem;font-weight:800;margin-bottom:24px;text-align:center;">How It Works</h2>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;">
-        @foreach([
-            ['01', 'Create an Account', 'Sign up with your email or phone number in seconds.'],
-            ['02', 'Choose a Doctor',   'Browse our specialists and pick the right one for you.'],
-            ['03', 'Book a Slot',       'Select your preferred date and type of consultation.'],
-            ['04', 'Get Confirmed',     'Our team reviews and confirms your appointment.'],
-        ] as [$num, $title, $desc])
-        <div class="card" style="text-align:center;padding:28px 20px;">
-            <div style="width:44px;height:44px;border-radius:50%;background:#eafaf1;color:#27ae60;font-weight:800;font-size:1rem;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;">{{ $num }}</div>
-            <div style="font-weight:700;font-size:1rem;margin-bottom:6px;">{{ $title }}</div>
-            <div style="font-size:0.86rem;color:#5a8a6e;">{{ $desc }}</div>
-        </div>
-        @endforeach
-    </div>
-</div>
+    {{-- HERO --}}
+    <div style="
+        text-align:center;
+        padding:80px 28px;
+        background:linear-gradient(135deg,#27ae60 0%,#1a7a42 100%);
+        border-radius:22px;
+        color:white;
+        position:relative;
+        overflow:hidden;
+        box-shadow:0 20px 40px rgba(0,0,0,0.08);
+    ">
+        <p style="font-size:0.85rem;letter-spacing:0.18em;text-transform:uppercase;opacity:0.8;margin-bottom:12px;">
+            MediSched General Hospital
+        </p>
 
-{{-- Departments --}}
-@if($departments->isNotEmpty())
-<div style="margin-bottom:52px;">
-    <h2 style="font-size:1.5rem;font-weight:800;margin-bottom:22px;">Our Departments</h2>
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;">
-        @foreach($departments as $dept)
-        <div class="card" style="padding:20px;margin-bottom:0;">
-            <div style="font-weight:700;margin-bottom:4px;">{{ $dept->name }}</div>
-            @if($dept->description)
-                <div style="font-size:0.83rem;color:#5a8a6e;">{{ $dept->description }}</div>
-            @endif
-        </div>
-        @endforeach
-    </div>
-</div>
-@endif
+        <h1 style="font-size:2.7rem;font-weight:800;line-height:1.2;max-width:640px;margin:0 auto;">
+            Your Health, Scheduled with Care
+        </h1>
 
-{{-- Featured Doctors --}}
-@if($doctors->isNotEmpty())
-<div>
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;">
-        <h2 style="font-size:1.5rem;font-weight:800;">Meet Our Doctors</h2>
-        <a href="{{ route('doctors.index') }}" class="btn btn-outline" style="font-size:0.88rem;padding:7px 18px;">See all →</a>
-    </div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:18px;">
-        @foreach($doctors->take(4) as $doctor)
-        <div class="card" style="text-align:center;padding:28px 20px;margin-bottom:0;">
-            <div style="width:62px;height:62px;border-radius:50%;background:#27ae60;color:white;font-weight:800;font-size:1.15rem;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;">
-                {{ strtoupper(substr($doctor->first_name,0,1).substr($doctor->last_name,0,1)) }}
-            </div>
-            <div style="font-weight:700;font-size:1rem;">Dr. {{ $doctor->first_name }} {{ $doctor->last_name }}</div>
-            <div style="font-size:0.85rem;color:#27ae60;font-weight:600;margin-top:3px;">{{ $doctor->department->name }}</div>
-            <div style="font-size:0.82rem;color:#5a8a6e;margin-top:4px;">{{ $doctor->experience_years }} yrs · ⭐ {{ number_format($doctor->rating,1) }}</div>
+        <p style="margin-top:16px;opacity:0.9;font-size:1.05rem;max-width:520px;margin-left:auto;margin-right:auto;">
+            Book consultations with our specialist doctors online — fast, easy, and from anywhere.
+        </p>
+
+        <div style="margin-top:36px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
             @auth
-                @if(Auth::user()->role !== 'doctor')
-                    <div style="margin-top:16px;">
-                        <a href="{{ route('appointments.book') }}" class="btn btn-green" style="font-size:0.85rem;padding:7px 20px;">Book</a>
-                    </div>
+                @if(Auth::user()->role === 'doctor')
+                    <a href="{{ route('doctor.queue') }}" class="btn btn-green" style="background:white;color:#1a7a42;">
+                        View Patient Queue
+                    </a>
+                    <a href="{{ route('doctors.index') }}" class="btn btn-outline" style="border-color:white;color:white;">
+                        Doctors List
+                    </a>
+                @else
+                    <a href="{{ route('appointments.book') }}" class="btn btn-green" style="background:white;color:#1a7a42;">
+                        Book an Appointment
+                    </a>
+                    <a href="{{ route('doctors.index') }}" class="btn btn-outline" style="border-color:white;color:white;">
+                        View Doctors
+                    </a>
                 @endif
             @else
-                <div style="margin-top:16px;">
-                    <a href="{{ route('appointments.book') }}" class="btn btn-green" style="font-size:0.85rem;padding:7px 20px;">Book</a>
-                </div>
+                <a href="{{ route('appointments.book') }}" class="btn btn-green" style="background:white;color:#1a7a42;">
+                    Book an Appointment
+                </a>
+                <a href="{{ route('doctors.index') }}" class="btn btn-outline" style="border-color:white;color:white;">
+                    View Doctors
+                </a>
             @endauth
         </div>
-        @endforeach
     </div>
+
+    {{-- HOW IT WORKS --}}
+    <div>
+        <h2 style="font-size:1.6rem;font-weight:800;text-align:center;margin-bottom:26px;">
+            How It Works
+        </h2>
+
+        <div class="grid-steps">
+            @foreach([
+                ['01','Create an Account','Sign up with your email or phone number.'],
+                ['02','Choose a Doctor','Find the right specialist for you.'],
+                ['03','Book a Slot','Pick your preferred schedule.'],
+                ['04','Get Confirmed','Receive confirmation instantly.'],
+            ] as [$num,$title,$desc])
+            <div class="card step-card">
+                <div class="step-circle">{{ $num }}</div>
+                <div class="step-title">{{ $title }}</div>
+                <div class="step-desc">{{ $desc }}</div>
+            </div>
+            @endforeach
+        </div>
+    </div>
+
+    {{-- DEPARTMENTS --}}
+    @if($departments->isNotEmpty())
+    <div>
+        <h2 style="font-size:1.6rem;font-weight:800;margin-bottom:18px;">
+            Our Departments
+        </h2>
+
+        <div class="grid-dept">
+            @foreach($departments as $dept)
+            <div class="card dept-card">
+                <div class="dept-name">{{ $dept->name }}</div>
+                @if($dept->description)
+                    <div class="dept-desc">{{ $dept->description }}</div>
+                @endif
+            </div>
+            @endforeach
+        </div>
+    </div>
+    @endif
+
+    {{-- DOCTORS --}}
+    @if($doctors->isNotEmpty())
+    <div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+            <h2 style="font-size:1.6rem;font-weight:800;">Meet Our Doctors</h2>
+            <a href="{{ route('doctors.index') }}" class="btn btn-outline btn-sm">See all →</a>
+        </div>
+
+        <div class="grid-doctors">
+            @foreach($doctors->take(4) as $doctor)
+            <div class="card doctor-card">
+
+                <div class="doctor-avatar">
+                    {{ strtoupper(substr($doctor->first_name,0,1).substr($doctor->last_name,0,1)) }}
+                </div>
+
+                <div class="doctor-name">
+                    Dr. {{ $doctor->first_name }} {{ $doctor->last_name }}
+                </div>
+
+                <div class="doctor-dept">
+                    {{ $doctor->department->name }}
+                </div>
+
+                <div class="doctor-meta">
+                    {{ $doctor->experience_years }} yrs · ⭐ {{ number_format($doctor->rating,1) }}
+                </div>
+
+                <div style="margin-top:14px;">
+                    <a href="{{ route('appointments.book') }}" class="btn btn-green btn-sm">
+                        Book
+                    </a>
+                </div>
+            </div>
+            @endforeach
+        </div>
+    </div>
+    @endif
+
 </div>
-@endif
+
+<style>
+.grid-steps{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+}
+
+.step-card{
+    text-align:center;
+    padding:26px;
+    transition:transform .2s ease, box-shadow .2s ease;
+}
+.step-card:hover{
+    transform:translateY(-4px);
+    box-shadow:0 14px 28px rgba(0,0,0,0.08);
+}
+.step-circle{
+    width:46px;height:46px;
+    border-radius:50%;
+    background:#eafaf1;
+    color:#27ae60;
+    font-weight:800;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin:0 auto 12px;
+}
+.step-title{font-weight:700;}
+.step-desc{font-size:0.85rem;color:#5a8a6e;margin-top:6px;}
+
+.grid-dept{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+    gap:16px;
+}
+.dept-card{
+    padding:20px;
+}
+.dept-name{font-weight:700;margin-bottom:6px;}
+.dept-desc{font-size:0.85rem;color:#5a8a6e;}
+
+.grid-doctors{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(230px,1fr));
+    gap:18px;
+}
+.doctor-card{
+    text-align:center;
+    padding:26px;
+}
+.doctor-avatar{
+    width:62px;height:62px;
+    border-radius:50%;
+    background:#27ae60;
+    color:white;
+    font-weight:800;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin:0 auto 12px;
+}
+.doctor-name{font-weight:700;}
+.doctor-dept{color:#27ae60;font-size:0.85rem;}
+.doctor-meta{font-size:0.82rem;color:#5a8a6e;margin-top:4px;}
+</style>
 
 @endsection
