@@ -33,7 +33,13 @@
     </div>
     @endguest
 
-    <div class="card" style="padding:30px;border-radius:18px;">
+    <div class="card" style="
+        padding:30px;
+        border-radius:18px;
+        background: linear-gradient(135deg, #f7ffe8, #ecf9d6);
+        border: 1.5px solid #cfeaa3;
+        box-shadow: 0 12px 30px rgba(168, 224, 99, 0.15);
+    ">
 
         <form method="POST" action="{{ route('appointments.store') }}">
             @csrf
@@ -66,6 +72,7 @@
                     <div class="form-group">
                         <label>Date of Birth *</label>
                         <input type="date" name="birth_date" value="{{ old('birth_date', $patient->birth_date ?? '') }}" required/>
+                        @error('birth_date') <div class="error-msg">{{ $message }}</div> @enderror
                     </div>
 
                     <div class="form-group">
@@ -76,6 +83,7 @@
                                 <option value="{{ $g }}" {{ old('gender', $patient->gender ?? '') == $g ? 'selected' : '' }}>{{ $g }}</option>
                             @endforeach
                         </select>
+                        @error('gender') <div class="error-msg">{{ $message }}</div> @enderror
                     </div>
                 </div>
 
@@ -83,11 +91,13 @@
                     <div class="form-group">
                         <label>Weight (kg)</label>
                         <input type="number" step="0.01" name="weight_kg" value="{{ old('weight_kg', $patient->weight_kg ?? '') }}"/>
+                        @error('weight_kg') <div class="error-msg">{{ $message }}</div> @enderror
                     </div>
 
                     <div class="form-group">
                         <label>Height (cm)</label>
                         <input type="number" step="0.01" name="height_cm" value="{{ old('height_cm', $patient->height_cm ?? '') }}"/>
+                        @error('height_cm') <div class="error-msg">{{ $message }}</div> @enderror
                     </div>
                 </div>
             </div>
@@ -102,9 +112,12 @@
                         <select name="department_id" id="department_id" required onchange="filterDoctors()">
                             <option value="">-- Select --</option>
                             @foreach($departments as $dept)
-                                <option value="{{ $dept->id }}">{{ $dept->name }}</option>
+                                <option value="{{ $dept->id }}" {{ old('department_id') == $dept->id ? 'selected' : '' }}>
+                                    {{ $dept->name }}
+                                </option>
                             @endforeach
                         </select>
+                        @error('department_id') <div class="error-msg">{{ $message }}</div> @enderror
                     </div>
 
                     <div class="form-group">
@@ -112,33 +125,39 @@
                         <select name="doctor_id" id="doctor_id" required>
                             <option value="">-- Select --</option>
                             @foreach($doctors as $doc)
-                                <option value="{{ $doc->id }}" data-dept="{{ $doc->department_id }}">
+                                <option value="{{ $doc->id }}"
+                                        data-dept="{{ $doc->department_id }}"
+                                        {{ old('doctor_id') == $doc->id ? 'selected' : '' }}>
                                     Dr. {{ $doc->first_name }} {{ $doc->last_name }}
                                 </option>
                             @endforeach
                         </select>
+                        @error('doctor_id') <div class="error-msg">{{ $message }}</div> @enderror
                     </div>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
                         <label>Date *</label>
-                        <input type="date" name="appointment_date" min="{{ date('Y-m-d') }}" required/>
+                        <input type="date" name="appointment_date" value="{{ old('appointment_date') }}" min="{{ date('Y-m-d') }}" required/>
+                        @error('appointment_date') <div class="error-msg">{{ $message }}</div> @enderror
                     </div>
 
                     <div class="form-group">
                         <label>Type *</label>
                         <select name="type" required>
                             <option value="">-- Select --</option>
-                            <option value="Online">Online</option>
-                            <option value="Walk-in">Walk-in</option>
+                            <option value="Online" {{ old('type') == 'Online' ? 'selected' : '' }}>Online</option>
+                            <option value="Walk-in" {{ old('type') == 'Walk-in' ? 'selected' : '' }}>Walk-in</option>
                         </select>
+                        @error('type') <div class="error-msg">{{ $message }}</div> @enderror
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label>Symptoms / Notes *</label>
-                    <textarea name="symptoms" rows="4" required></textarea>
+                    <textarea name="symptoms" rows="4" required>{{ old('symptoms') }}</textarea>
+                    @error('symptoms') <div class="error-msg">{{ $message }}</div> @enderror
                 </div>
             </div>
 
@@ -169,12 +188,8 @@
     text-transform: uppercase;
     color: #3a5a48;
     margin-bottom: 16px;
-    border-bottom: 2px solid #eef4f0;
+    border-bottom: 2px solid #dff2b2;
     padding-bottom: 8px;
-}
-
-.card {
-    box-shadow: 0 10px 30px rgba(0,0,0,0.06);
 }
 
 input, select, textarea {

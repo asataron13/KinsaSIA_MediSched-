@@ -33,14 +33,28 @@
                     <a href="{{ route('doctor.queue') }}" class="btn btn-green" style="background:white;color:#1a7a42;">
                         View Patient Queue
                     </a>
-                    <a href="{{ route('doctors.index') }}" class="btn btn-outline" style="border-color:white;color:white;">
+                    <a href="{{ route('doctors.index') }}" class="btn"
+                       style="
+                           border:2px solid white;
+                           color:white !important;
+                           background:transparent;
+                           min-width:180px;
+                           font-weight:700;
+                       ">
                         Doctors List
                     </a>
                 @else
                     <a href="{{ route('appointments.book') }}" class="btn btn-green" style="background:white;color:#1a7a42;">
                         Book an Appointment
                     </a>
-                    <a href="{{ route('doctors.index') }}" class="btn btn-outline" style="border-color:white;color:white;">
+                    <a href="{{ route('doctors.index') }}" class="btn"
+                       style="
+                           border:2px solid white;
+                           color:white !important;
+                           background:transparent;
+                           min-width:180px;
+                           font-weight:700;
+                       ">
                         View Doctors
                     </a>
                 @endif
@@ -48,7 +62,14 @@
                 <a href="{{ route('appointments.book') }}" class="btn btn-green" style="background:white;color:#1a7a42;">
                     Book an Appointment
                 </a>
-                <a href="{{ route('doctors.index') }}" class="btn btn-outline" style="border-color:white;color:white;">
+                <a href="{{ route('doctors.index') }}" class="btn"
+                   style="
+                       border:2px solid white;
+                       color:white !important;
+                       background:transparent;
+                       min-width:180px;
+                       font-weight:700;
+                   ">
                     View Doctors
                 </a>
             @endauth
